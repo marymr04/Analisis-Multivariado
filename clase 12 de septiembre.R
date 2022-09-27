@@ -45,3 +45,38 @@ cor(x)
 cor(xmale)
 scale(x,center=FALSE)#aqui se estandariza
 dist(scale(x,center=FALSE))
+
+
+#CLASE 27 DE SEPTIEMBRE
+
+#DIAGRAMA DE DISPERSION
+
+mlab="Empresas manufactureras con 20 empleados o mas"
+plab="Tamaño de la poblacion en miles(censo 1970"
+plot(popul~manu, data = USairpollution, xlab=mlab, ylab=plab)
+x11()
+
+# Lo que se ve en la grafica la mayoria se concentra en 500 empleados por empresa
+
+#DIAGRAMA DE CAJA BIVARIADA
+
+#con la densidad podemos afirmar un outlier para una variables aleatoria y graficarlo
+
+rug(USairpollution$manu, side = 1)
+rug(USairpollution$popul, side = 2)
+
+#histograma
+hist(USairpollution$manu, main="")
+
+#Boxplot
+boxplot(USairpollution$popul)
+layout(matrix(c(2,0,1,3), nrow=2, byrow=TRUE), widths=c(2,1), heights = c(1,2),respect=TRUE)
+#?layout
+xlim=range(USairpollution$manu)* 1.1
+xlim
+xlim2=with(USairpollution, range(manu))*1.1
+#?with
+xlim2
+plot(popul~manu, data = USairpollution, cex.lab=0.9, xlab=mlab, ylab=plab, type="n", xlim=xlim)
+with(USairpollution, text(manu, popul, cex=0.6, labels=abbreviate(row.names(USairpollution))))
+
