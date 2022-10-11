@@ -125,3 +125,54 @@ pairs(USairpollution, panel= function(x,y, ...){
 #se observa SO2 contra manu y popul
 # existe relacion lineal entre manu y popul, la forma en la que predicen S02
 #predicen SO2 de la misma manera manu y popul, cualquiera de las dos las predice de la misma manera.
+
+
+#Clase 10 de octubre
+
+#Analisis de componentes principales
+#Obtener pocas variables
+#Graficar o resumir los datos
+
+### Cual es la mejor manera de contruir un indice informativo
+### del rendimiento general (prueba-examen)?
+
+# por el promedio ponderado se puede evitar la estandarizacion 
+# Uso comun de analisis de CP
+# Representacion grafica o algun otro analisis (analisis de regresion(apunte en la libreta))
+
+library("MVA")
+demo("Ch-PCA")
+blood_corr
+blood_sd
+blood_pcacov=princomp(covmat=blood_cov)
+summary(blood_pcacov, loadings = TRUE)
+blood_pcacor=princomp(covmat=blood_corr)
+summary(blood_pcacor, loadings = TRUE)
+
+headsize
+head= headsize[,c("head1","head2")]
+head
+summary(head)
+x11()
+plot(head)
+cor(head)
+cov(head)
+pairs(head, panel = function(x, y, ...){
+  points(x, y, ...)
+  abline( lm(y ~ x), col="red")
+}, pch = ".", cex=5)
+
+head_pcacov=princomp(covmat=cov(head))
+summary(head_pcacov, loadings = TRUE)
+head_pcacor=princomp(covmat=cor(head))
+summary(head_pcacor, loadings = TRUE)
+
+#Para graficar los componentes principales
+#y1=0.71x1+0.71x2
+#y2=0.71x1-0.71x2
+
+?abline
+  
+cor(head)
+#correlacion positiva
+boxplot(head)
