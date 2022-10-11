@@ -176,3 +176,67 @@ summary(head_pcacor, loadings = TRUE)
 cor(head)
 #correlacion positiva
 boxplot(head)
+
+
+#CLASE 11 DE OCTUBRE
+
+#Contaminacion del aire en ciudades de los EEUU
+
+#Analizar varios aspectos de la contaminacion (SO2, TEMP,...)
+#PCA: Abordar los factores determinantes de la contaminacion 
+
+#SO2: contenido de SO2 en el aire en microgramos m3
+
+#temp: Temperatura media anual en grados farenheit
+#manu: numero de empresas manufactureras que emplean a 20 o mas trabajadores
+#popul: tamaño de la poblacion (censo 1970) en miles
+#wind: velocidad media anual del viento en millas/hora
+#precip: precipitacion media anual en pulgadas
+#predays: promedio de dias con precipitacion al año 
+
+### De las 6 variables, 2 se relacionan con factores humanos y 4 con el clima
+
+library("MVA")
+dfsinso2= USairpollution[,-1]
+dfsinso2
+#analisis de componentes principales
+usair_pca=princomp(dfsinso2, cor=TRUE)
+summary(usair_pca, loadings = TRUE)
+#y1=0.33temp-.612manu-.578popul...
+#Var(y1)=1.482^2 = lambda1
+#Proporcion 
+#1) p1= lambda1/lambda1+...+ =.366
+#Y1= e´X
+# e´= [0.330, -0.612]
+# solo se toman los componentes principales cuyos eigenvalores sean mayores o iguales a 1
+
+#NOTA: podemos vernos tentados a buscar una interpretacion de los componentes que les permita ser eqtiquetados en algun sentido
+# que les permita "etiquetados" en algun sentido
+
+#Restriccion: a´a= 1 todos los componentes se elvan al cuadrado y deben dar 1
+
+#Para las Y y la interpretacion se toman los valores mas grandes sin importar el signo 
+
+#Y1 puede considerarse como un indice de "calidad de vida" 
+
+#y2 "clima humedo" --- se relaciona con la cantidad de lluvia en una ciudad
+#con altos coeficientes en precip y predays
+
+#y3 = "tipo de clima" --- contraste entre precip y temp, separa a las ciudades
+#que tienen temperaturas altas y mucha lluvia de las que son mas frias o mas secas
+
+### ******* ADVERTENCIA (Peligros de la sobreinterpretacion)
+# 1. No existe ningun metodo matematico diseñado para resultados fisicos significativos
+# 2. Si una expresion tiene significado fisico obvio debe atribuirse a un cambio afortunado
+# afortunado o al hecho de que los datos tienen una estructura fuertemente marcado 
+
+# si no nos importa etiquetar a los componentes principales, aun pueden usarse
+# como base de varias presentaciones graficas (de las ciudades)
+
+x11()
+pairs(usair_pca$scores[,1:3], ylim=c(-6,4), xlim=c(-6,4), panel=function(x,y,...){
+  text(x,y, abbreviate(row.names(USairpollution)),cex=0.6)
+  bvbox(cbind(x,y), add= TRUE)
+})
+#scores=los puntajes que tiene cada variable en los componentes principales
+usair_pca$scores
