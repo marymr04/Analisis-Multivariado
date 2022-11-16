@@ -285,6 +285,7 @@ plot(Factor3~Factor1, data = scores2, xlab="Factor1", ylab="Factor3")
 plot(Factor3~Factor1, data = scores2, cex.lab=0.9, xlab="Factor1", ylab="Factor3", type="n")
 text(scores2$Factor1, scores2$Factor3, cex=.8, labels=abbreviate(row.names(scores2)))
 
+#BASE DRUG USE
 druguse
 sapply(1:7, function(nf) factanal(covmat=druguse, factors=nf, method="mle", n.obs=1634)$ PVAL)
 #se toman si son menores a .05
@@ -296,5 +297,52 @@ factanal(covmat=druguse, factors=6, method="mle")
 #NOS QUEDAMOS HASTA EL 4 PORQUE EN EL 5 SE REPITE MARIHUANA 
 
 
+#15 DE NOVIEMBRE
+
+#lAS CARGAS FACTORIALES SON LOS PARAMETROS DEL MODELO JUNTO CON LOS SCORES
+
+#PARA VALIDAR UN MODELO
+
+#1
+validacion=function(fac){
+  fa=factanal(covmat=druguse, factors=fac, method="mle", n.obs=1634)
+  est= tcrossprod(fa$loadings)+diag(fa$uniquenesses)
+  ret=round(druguse-est,3)
+  ret
+}
+validacion(6)
+
+#2
+validacion=function(fac){
+  fa=factanal(covmat=druguse, factors=fac, method="mle", n.obs=1634)
+  est= tcrossprod(fa$loadings)+diag(fa$uniquenesses)
+  ret=round(druguse-est,3)
+  ret
+}
+validacion(4)
+
+#es la diferencia de la matriz de correlaciones original y la matriz estimada LO QUE SALE
+
+#SE QUEDA CON EL QUE TENGA MAS CERCANO A 0 LOS ERRORES, en este caso nos quedamos con el de 4
 
 
+life
+women=life[,c("w0","w25","w50","w75")]
+women
+men=life[,c("m0","m25","m50","m75")]
+men
+
+sapply(1:1, function(fw) factanal(women, factors=fw, method="mle")$ PVAL)
+factanal(women, factors=1, method="mle")
+
+sapply(1:1, function(fm) factanal(men, factors=fm, method="mle")$ PVAL)
+factanal(women, factors=1, method="mle")
+
+scoresw= factanal(women, factors=1, method="mle", scores="regression")$scores
+scoresw
+
+scoresm= factanal(men, factors=1, method="mle", scores="regression")$scores
+scoresm
+
+#la fuerza de vida de las mujeres a los 25 años es mayor
+#la fuerza de vida de los hombres cuando cumplen 50 tiene mayor esperanza de vida 
